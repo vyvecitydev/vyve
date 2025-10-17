@@ -1,0 +1,29 @@
+{
+  "name": "vyve",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "pnpm@9.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "format": "prettier --write .",
+    "update:gotham": "pnpm --filter @vyve/gotham run build && cd packages/gotham && npm pack && mv vyve-gotham-*.tgz ../../apps/mobile/ && cd ../../apps/mobile && npm install ./vyve-gotham-*.tgz",
+    "update:ui": "pnpm --filter @vyve/ui run build && cd packages/ui && npm pack && mv vyve-ui-*.tgz ../../apps/mobile/ && cd ../../apps/mobile && npm install ./vyve-ui-*.tgz"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.25",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "prettier": "^3.0.0",
+    "turbo": "^2.0.0",
+    "typescript": "^5.6.0"
+  }
+}

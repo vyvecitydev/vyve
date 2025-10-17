@@ -1,0 +1,46 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tgz
+
+# Build output
+dist/
+build/
+.next/
+out/
+coverage/
+*.log
+
+# Turborepo
+.turbo/
+
+# React Native / iOS
+ios/Pods/
+ios/build/
+*.xcworkspace
+*.xcuserstate
+*.xcuserdata/
+
+# React Native / Android
+android/.gradle/
+android/build/
+android/app/build/
+*.apk
+*.keystore
+
+# Mac / Linux
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# Misc
+*.lock-wscript

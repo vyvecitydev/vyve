@@ -1,0 +1,41 @@
+# Ignore OS, build and vendor files
+node_modules
+**/node_modules
+*.lock
+.pnpm-debug.log
+.pnpm-store
+**/dist
+**/build
+**/.next
+**/.turbo
+.turbo
+**/Pods
+**/ios/Pods
+**/android/**/build
+**/ios/**/build
+apps/mobile/vendor
+apps/mobile/vendor/**
+# Ruby gems & vendor bundle
+apps/mobile/vendor/bundle
+# CocoaPods generated files
+apps/mobile/ios/Pods
+# Common caches
+**/.cache
+**/.turbo/cache
+# Binary artifacts
+**/*.jar
+**/*.keystore
+**/*.xcworkspace
+**/*.xcodeproj
+# Ignore.lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+# Ignore large generated files
+**/*.gem
+**/*.so
+**/*.dylib
+
+# Exclude other language vendor folders
+**/vendor/
+**/vendor/**

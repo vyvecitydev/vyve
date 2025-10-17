@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@vyve/gotham": ["packages/gotham/dist/index"],
+      "@vyve/gotham/*": ["packages/gotham/dist/*"],
+      "@vyve/ui": ["packages/ui/dist/index"],
+      "@vyve/ui/*": ["packages/ui/dist/*"]
+    }
+  }
+}
