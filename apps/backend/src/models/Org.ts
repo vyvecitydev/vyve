@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document, Types } from 'mongoose'
-import { IUser } from './user' // User modelini import ediyoruz
+import { IUser } from './User' // User modelini import ediyoruz
 
 export interface IOrg extends Document {
   text: string

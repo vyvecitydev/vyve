@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express'
 import Org from '../models/Org' // Org modelinin yolu
-import User from '../models/user' // User modelinin yolu
+import User from '../models/User' // User modelinin yolu
 
 const router = Router()
 
