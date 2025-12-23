@@ -10,7 +10,10 @@
     "lint": "turbo run lint",
     "format": "prettier --write .",
     "update:gotham": "pnpm --filter @vyve/gotham run build && cd packages/gotham && npm pack && mv vyve-gotham-*.tgz ../../apps/mobile/ && cd ../../apps/mobile && npm install ./vyve-gotham-*.tgz",
-    "update:ui": "pnpm --filter @vyve/ui run build && cd packages/ui && npm pack && mv vyve-ui-*.tgz ../../apps/mobile/ && cd ../../apps/mobile && npm install ./vyve-ui-*.tgz"
+    "update:gotham-native": "pnpm --filter @vyve/gotham-native run build && cd packages/gotham-native && npm pack && mv vyve-gotham-native-*.tgz ../../apps/mobile/ && cd ../../apps/mobile && npm install ./vyve-gotham-native-*.tgz",
+    "update:ui-native": "pnpm --filter @vyve/ui-native run build && cd packages/ui-native && npm pack && mv vyve-ui-native-*.tgz ../../apps/mobile/ && cd ../../apps/mobile && npm install ./vyve-ui-native-*.tgz",
+    "dev:corporate": "pnpm --filter corporate dev",
+    "build:corporate": "pnpm --filter corporate build"
   },
   "devDependencies": {
     "@types/react": "^18.3.25",

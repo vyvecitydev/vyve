@@ -12,8 +12,8 @@
     "paths": {
       "@vyve/gotham": ["packages/gotham/dist/index"],
       "@vyve/gotham/*": ["packages/gotham/dist/*"],
-      "@vyve/ui": ["packages/ui/dist/index"],
-      "@vyve/ui/*": ["packages/ui/dist/*"]
+      "@vyve/ui-native": ["packages/ui-native/dist/index"],
+      "@vyve/ui-native/*": ["packages/ui-native/dist/*"]
     }
   }
 }

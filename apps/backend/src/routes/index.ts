@@ -1,9 +1,10 @@
 import { Router } from 'express'
+import authRoutes from './auth'
+import orgRoutes from './org'
 
 const router = Router()
 
-router.get('/', (req, res) => {
-  res.json({ message: 'Vyve backend API is running ✅' })
-})
+router.use('/auth', authRoutes)
+router.use('/org', orgRoutes)
 
 export default router
