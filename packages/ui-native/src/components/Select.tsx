@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { View, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
+import { View, TouchableOpacity, FlatList, StyleSheet, ViewStyle } from 'react-native'
 import { Text } from '../'
 import { useTheme } from '../theme/ThemeProvider'
 import { Modalize } from 'react-native-modalize'
@@ -69,7 +69,7 @@ export const Select: React.FC<Props> = ({
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, alignSelf: 'center' }}>
       {label && (
         <Text variant="subtitle1" style={{ color: labelColor, marginBottom: 6 }}>
           {label}
@@ -85,7 +85,14 @@ export const Select: React.FC<Props> = ({
         onPress={openModal}
         activeOpacity={disabled ? 1 : 0.7}
       >
-        <Text style={{ color: value ? textColor : theme.colors.textSecondary }}>
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: theme.typography.fontFamily.regular,
+            lineHeight: 16 * 1.2,
+            color: value ? textColor : theme.colors.textSecondary,
+          }}
+        >
           {selectedLabel}
         </Text>
         <Text style={{ color: value ? textColor : theme.colors.textSecondary }}>⌄</Text>
@@ -119,7 +126,10 @@ export const Select: React.FC<Props> = ({
             scrollEnabled={false}
             renderItem={({ item }) => (
               <TouchableOpacity
-                style={[styles.item, { padding: theme.spacing.lg, borderColor: theme.colors.border }]}
+                style={[
+                  styles.item,
+                  { padding: theme.spacing.lg, borderColor: theme.colors.border },
+                ]}
                 onPress={() => {
                   onValueChange(item.value)
                   modalizeRef.current?.close()
@@ -135,15 +145,16 @@ export const Select: React.FC<Props> = ({
   )
 }
 
-const pickerStyles = (theme: any, borderColor: string, bgColor: string) => ({
-  fontSize: 16,
+const pickerStyles = (theme: any, borderColor: string, bgColor: string): ViewStyle => ({
   height: 48,
   borderWidth: 1,
   borderColor,
   borderRadius: theme.radius.md,
   paddingHorizontal: theme.spacing.lg,
-  paddingVertical: theme.spacing.md,
   backgroundColor: bgColor,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
 })
 
 const styles = StyleSheet.create({

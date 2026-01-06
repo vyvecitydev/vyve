@@ -1,8 +1,8 @@
 export const typography = {
   fontFamily: {
-    regular: 'Ubuntu-Regular',
-    medium: 'Ubuntu-Medium',
-    bold: 'Ubuntu-Bold',
+    regular: 'Onest-Regular',
+    medium: 'Onest-Medium',
+    bold: 'Onest-Bold',
   },
   sizes: {
     xs: 12,

@@ -47,6 +47,10 @@ const tr = {
   apple_login: 'Apple ile giriş yap',
   forgot_password: 'Şifremi Unuttum',
   dont_have_account: 'Hesabın yok mu? Kayıt ol',
+  passwords_not_match: 'Şifreler eşleşmiyor.',
+  email_already_exists: 'E-posta zaten mevcut.',
+  save: 'Kaydet',
+  edit_profile: 'Profili Düzenle',
 }
 
 export default tr

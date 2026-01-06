@@ -47,6 +47,10 @@ const en = {
   apple_login: 'Login with Apple',
   forgot_password: 'Forgot Password',
   dont_have_account: "Don't have an account? Sign up",
+  passwords_not_match: 'Passwords do not match.',
+  email_already_exists: 'Email already exists.',
+  save: 'Save',
+  edit_profile: 'Edit Profile',
 }
 
 export default en

@@ -7,6 +7,7 @@ import {
   GestureResponderEvent,
   ViewStyle,
   TextStyle,
+  View,
 } from 'react-native'
 import { useTheme } from '../theme/ThemeProvider'
 import { IconButton } from './IconButton'
@@ -95,7 +96,7 @@ export const Button: React.FC<ButtonProps> = ({
         <ActivityIndicator color={textColor} />
       ) : (
         <>
-          {iconLeft && <IconButton icon={iconLeft} style={{ backgroundColor: 'transparent' }} />}
+          {iconLeft && <View style={{ marginRight: theme.spacing.xs }}>{iconLeft}</View>}
           <Text
             style={[
               styles.text,
@@ -105,7 +106,7 @@ export const Button: React.FC<ButtonProps> = ({
           >
             {title}
           </Text>
-          {iconRight && <IconButton icon={iconRight} style={{ backgroundColor: 'transparent' }} />}
+          {iconRight && <View style={{ marginLeft: theme.spacing.xs }}>{iconRight}</View>}
         </>
       )}
     </TouchableOpacity>
