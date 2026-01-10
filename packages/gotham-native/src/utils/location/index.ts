@@ -42,3 +42,30 @@ export async function reverseGeocode(
     return null
   }
 }
+
+export async function searchLocation(query: string): Promise<Array<{ name: string, formattedAddress: string, latitude: number, longitude: number }>> {
+  try {
+    if (!query) return []
+
+    const res = await fetch(
+      `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&language=tr&key=${GOOGLE_MAPS_API_KEY}`
+    )
+
+    const json = await res.json()
+
+    if (!json.results) return []
+
+    // Google Places JSON'u -> bizim listemiz
+    const results = json.results.map((item: any) => ({
+      name: item.name,
+      formattedAddress: item.formatted_address,
+      latitude: item.geometry.location.lat,
+      longitude: item.geometry.location.lng,
+    }))
+
+    return results
+  } catch (e) {
+    console.error('searchLocation failed', e)
+    return []
+  }
+}

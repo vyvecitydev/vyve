@@ -239,19 +239,24 @@ router.post('/:orgId/checkin', auth, async (req: Request, res: Response) => {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
     const distanceKm = earthRadiusKm * c
 
-    if (distanceKm > 0.1) {
-      // 100 metre limit
-      return res.status(400).json({ message: 'You are too far from this place to check-in' })
+    // if (distanceKm > 0.1) {
+    //   return res.status(400).json({ message: 'You are too far from this place to check-in' })
+    // }
+
+    // 🔹 Bugünün tarihini oluştur
+    const today = new Date().toISOString().split('T')[0] // YYYY-MM-DD
+
+    // Check-in oluştur veya zaten varsa hata fırlat
+    try {
+      const checkin = await Checkin.create({ userId, orgId, date: today })
+      return res.json({ success: true, checkin })
+    } catch (err: any) {
+      // Duplicate key hatası -> zaten bugün check-in yapılmış
+      if (err.code === 11000) {
+        return res.status(400).json({ success: false, message: 'Bugün zaten check-in yaptınız.' })
+      }
+      throw err
     }
-
-    // Check-in oluştur
-    const checkin = await Checkin.findOneAndUpdate(
-      { userId, orgId },
-      { $setOnInsert: { userId, orgId } },
-      { upsert: true, new: true },
-    )
-
-    res.json({ success: true, checkin })
   } catch (err) {
     console.error(err)
     res.status(500).json({ success: false, message: 'Check-in failed' })

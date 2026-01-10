@@ -51,6 +51,7 @@ const en = {
   email_already_exists: 'Email already exists.',
   save: 'Save',
   edit_profile: 'Edit Profile',
+  search_location: 'Search Location'
 }
 
 export default en

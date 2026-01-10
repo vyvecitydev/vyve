@@ -51,6 +51,7 @@ const tr = {
   email_already_exists: 'E-posta zaten mevcut.',
   save: 'Kaydet',
   edit_profile: 'Profili Düzenle',
+  search_location: 'Lokasyon Ara',
 }
 
 export default tr

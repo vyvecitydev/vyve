@@ -118,17 +118,28 @@ export const Select: React.FC<Props> = ({
           useNativeDriver
           onOpen={() => setFocused(true)}
           onClose={() => setFocused(false)}
-          modalStyle={{ backgroundColor: theme.colors.backgroundSecondary }}
+          modalStyle={{
+            backgroundColor: theme.colors.backgroundSecondary,
+            borderTopLeftRadius: theme.radius.lg,
+            borderTopRightRadius: theme.radius.lg,
+          }}
         >
           <FlatList
             data={items}
             keyExtractor={(item) => item.value}
             scrollEnabled={false}
+            contentContainerStyle={{ gap: theme.spacing.md, marginTop: theme.spacing.lg }}
             renderItem={({ item }) => (
               <TouchableOpacity
                 style={[
                   styles.item,
-                  { padding: theme.spacing.lg, borderColor: theme.colors.border },
+                  {
+                    padding: theme.spacing.md,
+                    borderColor: theme.colors.border,
+                    backgroundColor: theme.colors.background,
+                    marginHorizontal: theme.spacing.lg,
+                    borderRadius: theme.radius.md,
+                  },
                 ]}
                 onPress={() => {
                   onValueChange(item.value)
@@ -159,6 +170,6 @@ const pickerStyles = (theme: any, borderColor: string, bgColor: string): ViewSty
 
 const styles = StyleSheet.create({
   item: {
-    borderBottomWidth: 1,
+    borderWidth: 1,
   },
 })
