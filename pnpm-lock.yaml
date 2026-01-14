@@ -225,6 +225,9 @@ importers:
       react-native:
         specifier: 0.81.4
         version: 0.81.4(@babel/core@7.28.4)(@types/react@19.2.2)(react@19.1.0)
+      react-native-haptic-feedback:
+        specifier: ^2.3.3
+        version: 2.3.3(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.2.2)(react@19.1.0))
       react-native-localize:
         specifier: ^3.5.4
         version: 3.5.4(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0)
@@ -3292,6 +3295,11 @@ packages:
     peerDependencies:
       react: '*'
       react-native: '*'
+
+  react-native-haptic-feedback@2.3.3:
+    resolution: {integrity: sha512-svS4D5PxfNv8o68m9ahWfwje5NqukM3qLS48+WTdhbDkNUkOhP9rDfDSRHzlhk4zq+ISjyw95EhLeh8NkKX5vQ==}
+    peerDependencies:
+      react-native: '>=0.60.0'
 
   react-native-localize@3.5.4:
     resolution: {integrity: sha512-Sr0XMSh76vFxZtRznD5FE8ZZtA4Srr7+Ix4WePhoQdeiJzuJEFbiQ2Lk3JJhsTMZdsZKn3j1KUwpV3hhnm2BqA==}
@@ -7486,6 +7494,10 @@ snapshots:
       hoist-non-react-statics: 3.3.2
       invariant: 2.2.4
       react: 19.1.0
+      react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.2.2)(react@19.1.0)
+
+  react-native-haptic-feedback@2.3.3(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.2.2)(react@19.1.0)):
+    dependencies:
       react-native: 0.81.4(@babel/core@7.28.4)(@types/react@19.2.2)(react@19.1.0)
 
   react-native-localize@3.5.4(react-native@0.81.4(@babel/core@7.28.4)(@types/react@19.2.2)(react@19.1.0))(react@19.1.0):

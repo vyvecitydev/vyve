@@ -263,24 +263,22 @@ router.post('/:orgId/checkin', auth, async (req: Request, res: Response) => {
   }
 })
 
-// router.post('/fix-createdAt', async (req: Request, res: Response) => {
-//   try {
-//     const yesterday = new Date()
-//     yesterday.setDate(yesterday.getDate() - 1)
+router.post('/:orgId/occupancy', async (req: Request, res: Response) => {
+  try {
+    const { count } = req.body
 
-//     const result = await Org.collection.updateMany(
-//       { createdAt: { $exists: true } },
-//       { $set: { createdAt: yesterday } },
-//     )
+    if (!count) {
+      return res.status(401).json({ message: 'Missing count' })
+    }
 
-//     res.json({
-//       success: true,
-//       message: `Updated ${result.modifiedCount} org(s) with createdAt (yesterday)`,
-//     })
-//   } catch (err) {
-//     console.error(err)
-//     res.status(500).json({ success: false, message: 'Failed to add createdAt' })
-//   }
-// })
+    res.json({
+      success: true,
+      value: count,
+    })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ success: false, message: 'Failed org occupancy count' })
+  }
+})
 
 export default router
