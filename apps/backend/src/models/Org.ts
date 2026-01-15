@@ -20,7 +20,7 @@ export interface IOrg extends Document {
     coordinates: [number, number] // [lng, lat]
   }
 
-  owner: Types.ObjectId | IUser
+  owner?: Types.ObjectId | IUser
   members: Types.ObjectId[] | IUser[]
   likeCount: number
 
@@ -64,7 +64,7 @@ const OrgSchema: Schema = new Schema(
       },
     },
 
-    owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    owner: { type: Schema.Types.ObjectId, ref: 'User', required: false },
     members: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 
     likeCount: {
