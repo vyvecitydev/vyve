@@ -265,15 +265,30 @@ router.post('/:orgId/checkin', auth, async (req: Request, res: Response) => {
 
 router.post('/:orgId/occupancy', async (req: Request, res: Response) => {
   try {
+    const { orgId } = req.params
     const { count } = req.body
 
-    if (!count) {
-      return res.status(401).json({ message: 'Missing count' })
+    if (typeof count !== 'number') {
+      return res.status(400).json({ message: 'Missing or invalid count' })
     }
+
+    // Örnek: MongoDB / Mongoose
+    const org = await Org.findById(orgId)
+    if (!org) {
+      return res.status(404).json({ message: 'Organization not found' })
+    }
+
+    // mevcut değere ekle
+    org.currentOccupancy = (org.currentOccupancy || 0) + count
+
+    // negatif olmasını engellemek istersen:
+    if (org.currentOccupancy < 0) org.currentOccupancy = 0
+
+    await org.save()
 
     res.json({
       success: true,
-      value: count,
+      currentOccupancy: org.currentOccupancy,
     })
   } catch (err) {
     console.error(err)
