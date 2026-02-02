@@ -13,12 +13,16 @@ type Props = {
   children?: any
   snapPoint?: number
   modalHeight?: number
+  withReactModal?: boolean
   onOpen?: () => void
   onClose?: () => void
 }
 
 export const Modalize = forwardRef<ModalizeHandle, Props>(
-  ({ children, snapPoint = 300, modalHeight = 400, onOpen, onClose }, ref) => {
+  (
+    { children, snapPoint = 300, modalHeight = 400, withReactModal = false, onOpen, onClose },
+    ref,
+  ) => {
     const { theme } = useTheme()
     const modalizeRef = useRef<RNModalize>(null)
 
@@ -28,28 +32,29 @@ export const Modalize = forwardRef<ModalizeHandle, Props>(
     }))
 
     return (
-      <Portal>
-        <RNModalize
-          ref={modalizeRef}
-          snapPoint={snapPoint}
-          modalHeight={modalHeight}
-          useNativeDriver
-          onOpen={onOpen}
-          onClose={onClose}
-          scrollViewProps={{
-            keyboardShouldPersistTaps: 'handled',
-          }}
-          modalStyle={[
-            {
-              backgroundColor: theme.colors.backgroundSecondary,
-              borderTopLeftRadius: theme.radius.lg,
-              borderTopRightRadius: theme.radius.lg,
-            },
-          ]}
-        >
-          {children}
-        </RNModalize>
-      </Portal>
+      // <Portal>
+      <RNModalize
+        ref={modalizeRef}
+        snapPoint={snapPoint}
+        modalHeight={modalHeight}
+        useNativeDriver
+        withReactModal={withReactModal}
+        onOpen={onOpen}
+        onClose={onClose}
+        scrollViewProps={{
+          keyboardShouldPersistTaps: 'handled',
+        }}
+        modalStyle={[
+          {
+            backgroundColor: theme.colors.backgroundSecondary,
+            borderTopLeftRadius: theme.radius.lg,
+            borderTopRightRadius: theme.radius.lg,
+          },
+        ]}
+      >
+        {children}
+      </RNModalize>
+      // </Portal>
     )
   },
 )

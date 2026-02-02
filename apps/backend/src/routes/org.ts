@@ -8,158 +8,203 @@ import Checkin from '../models/Checkin'
 
 const router = Router()
 
-// 🏢 Tüm organizationları getir (opsiyonel geoNear + mesafeye göre sıralı)
-router.get('/', optionalAuth, async (req: Request, res: Response) => {
+function escapeRegex(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+const MOD_CAPACITY_MAP: Record<number, { min: number; max: number }> = {
+  1: { min: 0, max: 30 }, // Chill
+  2: { min: 30, max: 60 }, // Normal
+  3: { min: 60, max: 9999 }, // Enerjik
+}
+
+router.post('/', optionalAuth, async (req: Request, res: Response) => {
   try {
     const userId = req.user?.id
     const { lat, lng } = req.query
+    const { text, tags, mods } = req.body.search || {}
+
+    const pageNumber = Math.max(Number(req.body.page ?? 1), 1)
+    const pageSize = Math.max(Number(req.body.limit ?? 20), 1)
 
     const hasLocation = !!(lat && lng)
 
-    const geoStages: PipelineStage[] = hasLocation
-      ? [
-          {
-            $geoNear: {
-              near: {
-                type: 'Point',
-                coordinates: [Number(lng), Number(lat)], // ⚠️ Mongo: lng first
-              },
-              distanceField: 'distance', // metre
-              spherical: true,
-            },
-          } as PipelineStage.GeoNear,
+    const pipeline: any[] = []
 
-          // km ham değeri
-          {
-            $addFields: {
-              distanceKmRaw: { $divide: ['$distance', 1000] },
-            },
-          },
+    /* -----------------------------
+       🔎 SEARCH FILTERS
+    ------------------------------ */
+    const andFilters: any[] = []
 
-          // 🧠 İnsan okunur mesafe
-          {
-            $addFields: {
-              distanceText: {
-                $cond: [
-                  { $lt: ['$distanceKmRaw', 1] },
-                  {
-                    $concat: [{ $toString: { $round: ['$distance', 0] } }, ' m'],
-                  },
-                  {
-                    $concat: [
-                      {
-                        $toString: {
-                          $round: ['$distanceKmRaw', 1],
-                        },
-                      },
-                      ' km',
-                    ],
-                  },
-                ],
-              },
-            },
-          },
-
-          {
-            $unset: 'distanceKmRaw',
-          },
-
-          {
-            $sort: { distance: 1 }, // ✅ en yakından uzağa
-          },
-        ]
-      : [
-          {
-            $sort: { createdAt: -1 },
-          },
-        ]
-
-    // 🔓 Login değilse
-    if (!userId) {
-      const orgs = await Org.aggregate([
-        ...geoStages,
-        {
-          $project: {
-            _id: 1,
-            text: 1,
-            imageUrl: 1,
-            likeCount: 1,
-            photos: 1,
-            percent: 1,
-            tags: 1,
-            address: 1,
-            description: 1,
-            phone: 1,
-            capacity: 1,
-            currentOccupancy: 1,
-            location: 1,
-            distance: 1,
-            distanceText: 1,
-            createdAt: 1,
-          },
+    // TEXT
+    if (typeof text === 'string' && text.trim() !== '') {
+      andFilters.push({
+        text: {
+          $regex: escapeRegex(text.trim()),
+          $options: 'i',
         },
-      ])
-
-      return res.json({ success: true, data: orgs })
+      })
     }
 
-    // 🔐 Login varsa
-    const orgs = await Org.aggregate([
-      ...geoStages,
-      {
-        $lookup: {
-          from: 'likes',
-          let: { orgId: '$_id' },
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $and: [
-                    { $eq: ['$orgId', '$$orgId'] },
-                    {
-                      $eq: ['$userId', new mongoose.Types.ObjectId(userId)],
+    // TAGS
+    if (Array.isArray(tags) && tags.length > 0) {
+      andFilters.push({
+        tags: {
+          $in: tags.map((tag) => new RegExp(`^${escapeRegex(tag)}$`, 'i')),
+        },
+      })
+    }
+
+    // MODS → capacity ranges (OR)
+    if (Array.isArray(mods) && mods.length > 0) {
+      const modRanges = mods
+        .map((mod) => {
+          const range = MOD_CAPACITY_MAP[Number(mod)]
+          if (!range) return null
+
+          return {
+            percent: {
+              $gte: range.min,
+              $lt: range.max,
+            },
+          }
+        })
+        .filter(Boolean)
+
+      if (modRanges.length > 0) {
+        andFilters.push({
+          $or: modRanges,
+        })
+      }
+    }
+
+    const matchStage = andFilters.length > 0 ? { $and: andFilters } : null
+
+    /* -----------------------------
+       🌍 GEO / NORMAL FLOW
+    ------------------------------ */
+    if (hasLocation) {
+      pipeline.push({
+        $geoNear: {
+          near: {
+            type: 'Point',
+            coordinates: [Number(lng), Number(lat)],
+          },
+          distanceField: 'distance',
+          spherical: true,
+        },
+      })
+
+      if (matchStage) {
+        pipeline.push({ $match: matchStage })
+      }
+
+      pipeline.push({
+        $addFields: {
+          distanceText: {
+            $cond: [
+              { $lt: [{ $divide: ['$distance', 1000] }, 1] },
+              {
+                $concat: [{ $toString: { $round: ['$distance', 0] } }, ' m'],
+              },
+              {
+                $concat: [
+                  {
+                    $toString: {
+                      $round: [{ $divide: ['$distance', 1000] }, 1],
                     },
-                  ],
+                  },
+                  ' km',
+                ],
+              },
+            ],
+          },
+        },
+      })
+
+      pipeline.push({ $sort: { distance: 1 } })
+    } else {
+      if (matchStage) {
+        pipeline.push({ $match: matchStage })
+      }
+
+      pipeline.push({ $sort: { createdAt: -1 } })
+    }
+
+    /* -----------------------------
+       🔐 LIKE INFO
+    ------------------------------ */
+    if (userId) {
+      pipeline.push(
+        {
+          $lookup: {
+            from: 'likes',
+            let: { orgId: '$_id' },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      { $eq: ['$orgId', '$$orgId'] },
+                      {
+                        $eq: ['$userId', new mongoose.Types.ObjectId(userId)],
+                      },
+                    ],
+                  },
                 },
               },
-            },
-            { $limit: 1 },
-          ],
-          as: 'userLike',
+              { $limit: 1 },
+            ],
+            as: 'userLike',
+          },
         },
-      },
-      {
-        $addFields: {
-          isLiked: { $gt: [{ $size: '$userLike' }, 0] },
+        {
+          $addFields: {
+            isLiked: { $gt: [{ $size: '$userLike' }, 0] },
+          },
         },
-      },
-      {
-        $unset: 'userLike',
-      },
-      {
-        $project: {
-          _id: 1,
-          text: 1,
-          imageUrl: 1,
-          likeCount: 1,
-          isLiked: 1,
-          photos: 1,
-          percent: 1,
-          tags: 1,
-          address: 1,
-          description: 1,
-          phone: 1,
-          capacity: 1,
-          currentOccupancy: 1,
-          location: 1,
-          distance: 1,
-          distanceText: 1,
-          createdAt: 1,
-        },
-      },
-    ])
+        { $unset: 'userLike' },
+      )
+    }
 
-    res.json({ success: true, data: orgs })
+    /* -----------------------------
+       📄 PAGINATION
+    ------------------------------ */
+    pipeline.push({ $skip: (pageNumber - 1) * pageSize }, { $limit: pageSize })
+
+    /* -----------------------------
+       🎯 PROJECTION
+    ------------------------------ */
+    pipeline.push({
+      $project: {
+        _id: 1,
+        text: 1,
+        imageUrl: 1,
+        likeCount: 1,
+        isLiked: 1,
+        photos: 1,
+        percent: 1,
+        tags: 1,
+        address: 1,
+        description: 1,
+        phone: 1,
+        capacity: 1,
+        currentOccupancy: 1,
+        location: 1,
+        distance: 1,
+        distanceText: 1,
+        createdAt: 1,
+      },
+    })
+
+    const orgs = await Org.aggregate(pipeline)
+
+    res.json({
+      success: true,
+      data: orgs,
+      page: pageNumber,
+      limit: pageSize,
+    })
   } catch (err) {
     console.error(err)
     res.status(500).json({ success: false, message: 'Server error' })
