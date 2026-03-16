@@ -52,7 +52,8 @@ const tr = {
   save: 'Kaydet',
   edit_profile: 'Profili Düzenle',
   search_location: 'Lokasyon Ara',
-  check_in: "Check in"
+  check_in: "Check in",
+  settings: 'Ayarlar',
 }
 
 export default tr

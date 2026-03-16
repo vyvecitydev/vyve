@@ -1,6 +1,6 @@
 import React, { forwardRef, useImperativeHandle, useRef } from 'react'
 import { StyleSheet } from 'react-native'
-import { Modalize as RNModalize } from 'react-native-modalize'
+import { Modalize as RNModalize, ModalizeProps } from 'react-native-modalize'
 import { Portal } from 'react-native-portalize'
 import { useTheme } from '../theme/ThemeProvider'
 
@@ -9,18 +9,22 @@ export type ModalizeHandle = {
   close: () => void
 }
 
-type Props = {
-  children?: any
-  snapPoint?: number
-  modalHeight?: number
-  withReactModal?: boolean
-  onOpen?: () => void
-  onClose?: () => void
+type Props = ModalizeProps & {
+  children?: React.ReactNode
 }
 
 export const Modalize = forwardRef<ModalizeHandle, Props>(
   (
-    { children, snapPoint = 300, modalHeight = 400, withReactModal = false, onOpen, onClose },
+    {
+      children,
+      snapPoint = 300,
+      modalHeight = 400,
+      withReactModal = false,
+      onOpen,
+      onClose,
+      modalStyle,
+      ...rest
+    },
     ref,
   ) => {
     const { theme } = useTheme()
@@ -50,7 +54,9 @@ export const Modalize = forwardRef<ModalizeHandle, Props>(
             borderTopLeftRadius: theme.radius.lg,
             borderTopRightRadius: theme.radius.lg,
           },
+          modalStyle,
         ]}
+        {...rest}
       >
         {children}
       </RNModalize>

@@ -14,6 +14,10 @@ export interface IUser extends Document {
   privacy?: boolean
   picture?: string
   refreshToken?: string
+
+  followersCount: number
+  followingCount: number
+
   createdAt: Date
 }
 
@@ -39,6 +43,16 @@ const UserSchema = new Schema<IUser>({
   appleId: { type: String, unique: true, sparse: true },
 
   picture: String,
+
+  followersCount: {
+    type: Number,
+    default: 0,
+  },
+
+  followingCount: {
+    type: Number,
+    default: 0,
+  },
 
   refreshToken: String,
   privacy: { type: Boolean, default: true },

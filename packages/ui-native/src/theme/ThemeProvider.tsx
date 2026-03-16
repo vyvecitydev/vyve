@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode, useMemo } from 'react'
+import React, { createContext, useContext, useState, ReactNode, useMemo, useCallback } from 'react'
 import { lightColors, darkColors, Colors } from './colors'
 import { spacing, Spacing } from './spacing'
 import { radius, Radius } from './radius'
@@ -15,6 +15,8 @@ export interface Theme {
 interface ThemeContextProps {
   theme: Theme
   toggleTheme: () => void
+  setThemeColors: (colors: Partial<Colors>) => void
+  resetThemeColors: () => void
 }
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined)
@@ -28,26 +30,61 @@ export const ThemeProvider = ({
   initialMode: 'light' | 'dark'
   modeOverride?: 'light' | 'dark' | null
 }) => {
-  const [mode, setMode] = useState<'light' | 'dark'>(initialMode ? initialMode : 'light')
+  const [mode, setMode] = useState<'light' | 'dark'>(initialMode ?? 'light')
 
-  const toggleTheme = () => setMode((prev) => (prev === 'light' ? 'dark' : 'light'))
+  // 🎨 Runtime renk override state'i
+  const [colorOverrides, setColorOverrides] = useState<Partial<Colors>>({})
 
-  const theme = useMemo<Theme>(
-    () => ({
-      colors: (modeOverride || mode) === 'light' ? lightColors : darkColors,
+  const toggleTheme = useCallback(() => {
+    setMode((prev) => (prev === 'light' ? 'dark' : 'light'))
+  }, [])
+
+  const setThemeColors = useCallback((colors: Partial<Colors>) => {
+    setColorOverrides((prev) => ({
+      ...prev,
+      ...colors,
+    }))
+  }, [])
+
+  const resetThemeColors = useCallback(() => {
+    setColorOverrides({})
+  }, [])
+
+  const theme = useMemo<Theme>(() => {
+    const currentMode = modeOverride || mode
+
+    const baseColors = currentMode === 'light' ? lightColors : darkColors
+
+    return {
+      colors: {
+        ...baseColors,
+        ...colorOverrides, // 👈 override burada merge ediliyor
+      },
       spacing,
       radius,
       typography,
-      mode: modeOverride || mode,
-    }),
-    [mode, modeOverride],
-  )
+      mode: currentMode,
+    }
+  }, [mode, modeOverride, colorOverrides])
 
-  return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>
+  return (
+    <ThemeContext.Provider
+      value={{
+        theme,
+        toggleTheme,
+        setThemeColors,
+        resetThemeColors,
+      }}
+    >
+      {children}
+    </ThemeContext.Provider>
+  )
 }
 
 export const useTheme = () => {
   const context = useContext(ThemeContext)
-  if (!context) throw new Error('useTheme must be used within a ThemeProvider')
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider')
+  }
   return context
 }

@@ -53,6 +53,7 @@ const en = {
   edit_profile: 'Edit Profile',
   search_location: 'Search Location',
   check_in: 'Check in',
+  settings: 'Settings',
 }
 
 export default en

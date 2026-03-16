@@ -17,7 +17,7 @@ type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'warning' | 'info' | '
 type ButtonType = 'contained' | 'outlined' | 'text'
 
 interface ButtonProps {
-  title: string
+  title?: string
   onPress?: (event: GestureResponderEvent) => void
   variant?: ButtonVariant
   type?: ButtonType
@@ -95,9 +95,9 @@ export const Button: React.FC<ButtonProps> = ({
       {loading ? (
         <ActivityIndicator color={textColor} />
       ) : (
-        <>
-          {iconLeft && <View style={{ marginRight: theme.spacing.xs }}>{iconLeft}</View>}
-          <Text
+        <View style={{ flexDirection: 'row', gap: theme.spacing.xs }}>
+          {iconLeft && <View>{iconLeft}</View>}
+          {title && <Text
             style={[
               styles.text,
               { color: textColor, fontSize: theme.typography.sizes.md },
@@ -105,9 +105,9 @@ export const Button: React.FC<ButtonProps> = ({
             ]}
           >
             {title}
-          </Text>
+          </Text>}
           {iconRight && <View style={{ marginLeft: theme.spacing.xs }}>{iconRight}</View>}
-        </>
+        </View>
       )}
     </TouchableOpacity>
   )
