@@ -18,9 +18,10 @@ coverage/
 .turbo/
 
 # React Native / iOS
+# NOT: .xcworkspace burada ignore edilmiyor; contents.xcworkspacedata
+# CocoaPods build'i icin gerekli. Xcode gurultusunu apps/mobile/.gitignore eler.
 ios/Pods/
 ios/build/
-*.xcworkspace
 *.xcuserstate
 *.xcuserdata/
 

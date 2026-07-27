@@ -1,0 +1,45 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/Roboto-Medium.ttf",
+      "sha1": "fa5192203f85ddb667579e1bdf26f12098bb873b"
+    },
+    {
+      "path": "src/assets/fonts/Ubuntu-Medium.ttf",
+      "sha1": "da662f767e6261491e20da197bd7ffbb7a7d122c"
+    },
+    {
+      "path": "src/assets/fonts/Roboto-Regular.ttf",
+      "sha1": "3bff51436aa7eb995d84cfc592cc63e1316bb400"
+    },
+    {
+      "path": "src/assets/fonts/Onest-Medium.ttf",
+      "sha1": "98a4f77b814f8db264f133e7fc2017a50f0244fe"
+    },
+    {
+      "path": "src/assets/fonts/Ubuntu-Regular.ttf",
+      "sha1": "d4bf0c7dc189b7be2533a3c9b70082a5dd2b5414"
+    },
+    {
+      "path": "src/assets/fonts/Ubuntu-Bold.ttf",
+      "sha1": "020aaec9cdeb59aa8ebd2e4c693527cddb2d1577"
+    },
+    {
+      "path": "src/assets/fonts/Onest-Bold.ttf",
+      "sha1": "c7e4a690aa8f7061aff8a01db173c0fc662ba9ec"
+    },
+    {
+      "path": "src/assets/fonts/Onest-SemiBold.ttf",
+      "sha1": "e37d9d95ce73c21bd85946417f3192d77d282307"
+    },
+    {
+      "path": "src/assets/fonts/Onest-Regular.ttf",
+      "sha1": "d7c2a9d55e1e32428505d8d94d3027bd5d121cb7"
+    },
+    {
+      "path": "src/assets/fonts/Roboto-Bold.ttf",
+      "sha1": "783de2321d7e6d21f880a10437a9f2c7b45ed198"
+    }
+  ]
+}
