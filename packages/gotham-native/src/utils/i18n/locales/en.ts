@@ -54,6 +54,10 @@ const en = {
   search_location: 'Search Location',
   check_in: 'Check in',
   settings: 'Settings',
+  openHours: 'Open now | {{start}} - {{end}}',
+  densityWithPercentage: '%{{percentage}} density',
+  densityNotification: 'Density Notification',
+  liveDensity: 'Live Density',
 }
 
 export default en

@@ -9,9 +9,8 @@
     "build": "turbo run build",
     "lint": "turbo run lint",
     "format": "prettier --write .",
-    "update:gotham": "pnpm --filter @vyve/gotham run build && cd packages/gotham && npm pack && mv vyve-gotham-*.tgz ../../apps/mobile/ && cd ../../apps/mobile && npm install ./vyve-gotham-*.tgz",
-    "update:gotham-native": "pnpm --filter @vyve/gotham-native run build && cd packages/gotham-native && npm pack && mv vyve-gotham-native-*.tgz ../../apps/mobile/ && cd ../../apps/mobile && npm install ./vyve-gotham-native-*.tgz",
-    "update:ui-native": "pnpm --filter @vyve/ui-native run build && cd packages/ui-native && npm pack && mv vyve-ui-native-*.tgz ../../apps/mobile/ && cd ../../apps/mobile && npm install ./vyve-ui-native-*.tgz",
+    "sync:mobile": "node scripts/sync-mobile.mjs",
+    "sync:mobile:install": "node scripts/sync-mobile.mjs --install",
     "dev:corporate": "pnpm --filter corporate dev",
     "build:corporate": "pnpm --filter corporate build"
   },

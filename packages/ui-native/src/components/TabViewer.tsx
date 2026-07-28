@@ -55,7 +55,7 @@ export const TabViewer = ({ tabs, image }: TabViewerProps) => {
             width: Dimensions.get('window').width,
             height: Dimensions.get('window').height,
             // transform: [{ rotate: '90deg' }],
-            opacity: 0.8
+            opacity: 0.8,
           },
         ]}
       />

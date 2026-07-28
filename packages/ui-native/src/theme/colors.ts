@@ -9,8 +9,8 @@ export const lightColors = {
   border: '#E5E5EA',
   danger: '#FF3B30',
   warning: '#FFCC00',
-  info: '#5AC8FA',
-  success: '#34C759',
+  info: '#0172a5',
+  success: '#5ac765',
 }
 
 export const darkColors = {
@@ -18,14 +18,14 @@ export const darkColors = {
   secondary: '#818181',
   background: '#0E0D12',
   backgroundSecondary: '#181420',
-  surface: '#1C1C1E',
+  surface: '#363638',
   text: '#E3E3E3',
   textSecondary: '#A1A1A1',
   border: '#3A3A3C',
   danger: '#FF453A',
   warning: '#FFD60A',
-  info: '#64D2FF',
-  success: '#30D158',
+  info: '#0172a5',
+  success: '#5ac765',
 }
 
 export type Colors = typeof lightColors

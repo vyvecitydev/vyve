@@ -5,10 +5,15 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 *.tgz
+# apps/mobile paketlere `file:*.tgz` ile bagli (RN + pnpm symlink uyumsuzlugu).
+# Bu tarball'lar commit'leniyor ki temiz clone'da `npm install`/`npm ci` calissin.
+# Uretimi: pnpm sync:mobile
+!apps/mobile/vyve-*.tgz
 
 # Build output
 dist/
 build/
+*.tsbuildinfo
 .next/
 out/
 coverage/
